@@ -1,7 +1,9 @@
 all:
-	@docker secret create credentials ../secrets/credentials.txt
-	@docker secret create db_password ../secrets/db_password.txt
-	@docker secret create db_root_password/db_root_password.txt
+	mkdir /home/arosas-j/data/wordpress
+	mkdir /home/arosas-j/data/mysql
+	@docker secret create credentials ./secrets/credentials.txt
+	@docker secret create db_password ./secrets/db_password.txt
+	@docker secret create db_root_password ./secrets/db_root_password.txt
 	@docker compose -f ./srcs/docker-compose.yml up -d --build
 
 down:
