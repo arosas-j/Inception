@@ -43,26 +43,27 @@ services:
       - .env
     secrets:
       - credentials
+      - db_password
 
 volumes:
   mariadb_data:
     driver: local
     driver_opts:
       type: none
-      device: ~/data/mysql
+      device: home/arosas-j/data/mysql
       o: bind
 
   wordpress_data:
     driver: local
     driver_opts:
       type: none
-      device: ~/data/wordpress
+      device: home/arosas-j/data/wordpress
       o: bind
 
 secrets:
   credentials:
-    file: ./secrets/credentials.txt
+    file: ../secrets/credentials.txt
   db_password:
-    file: ./secrets/db_password.txt
+    file: ../secrets/db_password.txt
   db_root_password:
-    file: ./secrets/db_root_password.txt
+    file: ../secrets/db_root_password.txt

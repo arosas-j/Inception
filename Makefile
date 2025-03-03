@@ -1,8 +1,14 @@
 all:
+	@docker secret create credentials ../secrets/credentials.txt
+	@docker secret create db_password ../secrets/db_password.txt
+	@docker secret create db_root_password/db_root_password.txt
 	@docker compose -f ./srcs/docker-compose.yml up -d --build
 
 down:
 	@docker compose -f ./srcs/docker-compose.yml down
+
+stop:
+	@docker compose -f ./srcs/docker-compose.yml stop
 
 clean:
 	@rm -rf ~/data/mysql/*
