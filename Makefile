@@ -1,4 +1,5 @@
 all:
+	mkdir /home/arosas-j/data
 	mkdir /home/arosas-j/data/wordpress
 	mkdir /home/arosas-j/data/mysql
 	@docker secret create credentials ./secrets/credentials.txt

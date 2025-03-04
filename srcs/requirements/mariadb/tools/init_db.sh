@@ -1,6 +1,21 @@
 #!/bin/bash
 service mysql start
 
+# Wait for MySQL to be ready with a timeout
+timeout=60
+elapsed=0
+interval=2
+
+while ! mysqladmin ping --silent; do
+	echo "Waiting for MySQL to be ready..."
+	sleep $interval
+	elapsed=$((elapsed + interval))
+	if [ $elapsed -ge $timeout ]; then
+		echo "MySQL did not start within $timeout seconds."
+		exit 1
+	fi
+done
+
 MYSQL_ROOT_PASSWORD=$(cat /run/secrets/db_root_password)
 MYSQL_PASSWORD=$(cat /run/secrets/db_password)
 

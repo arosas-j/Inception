@@ -50,14 +50,14 @@ volumes:
     driver: local
     driver_opts:
       type: none
-      device: home/arosas-j/data/mysql
+      device: /home/arosas-j/data/mysql
       o: bind
 
   wordpress_data:
     driver: local
     driver_opts:
       type: none
-      device: home/arosas-j/data/wordpress
+      device: /home/arosas-j/data/wordpress
       o: bind
 
 secrets:
