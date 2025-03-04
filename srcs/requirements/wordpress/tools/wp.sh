@@ -3,6 +3,8 @@
 source /run/secrets/credentials
 MYSQL_PASSWORD=$(cat /run/secrets/db_password)
 
+sleep 15
+
 if [ -f ./wp-config.php ]
 then
 	echo "Wordpress already exists"
