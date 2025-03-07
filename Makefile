@@ -1,26 +1,30 @@
-all:
-	mkdir /home/arosas-j/data
-	mkdir /home/arosas-j/data/wordpress
-	mkdir /home/arosas-j/data/mysql
-	@docker secret create credentials ./secrets/credentials.txt
-	@docker secret create db_password ./secrets/db_password.txt
-	@docker secret create db_root_password ./secrets/db_root_password.txt
-	@docker compose -f ./srcs/docker-compose.yml up -d --build
+# Define paths
+DCOMPOSE = docker-compose -f srcs/docker-compose.yml
+VOLUMES = /home/arosas-j/data/wordpress /home/arosas-j/data/mariadb
 
-down:
-	@docker compose -f ./srcs/docker-compose.yml down
+# Setup: Create necessary directories
+setup:
+	mkdir -p $(VOLUMES)
 
+# Build and start the containers
+all: setup
+	$(DCOMPOSE) up --build -d
+
+# Stop containers without removing volumes or images
 stop:
-	@docker compose -f ./srcs/docker-compose.yml stop
+	$(DCOMPOSE) stop
 
+# Remove containers, keeping images and volumes
+down:
+	$(DCOMPOSE) down
+
+# Remove containers and volumes (but keep images)
 clean:
-	@rm -rf ~/data/mysql/*
-	@rm -rf ~/data/wordpress/*
-	@docker stop $$(docker ps -qa)
-	@docker rm $$(docker ps -qa)
-	@docker rmi $$(docker images -qa)
-	@docker volume rm $$(docker volume ls -q)
-	@docker network rm inception_net
-	@docker secret rm $$(docker secret ls -q)
+	$(DCOMPOSE) down --volumes
 
-.PHONY: all down clean
+# Remove everything (containers, volumes, images)
+fclean:
+	$(DCOMPOSE) down --rmi all --volumes
+
+# Restart the project
+re: fclean all
