@@ -1,14 +1,14 @@
 # Define paths
-DCOMPOSE = docker-compose -f srcs/docker-compose.yml
-VOLUMES = /home/arosas-j/data/wordpress /home/arosas-j/data/mariadb
-
-# Setup: Create necessary directories
-setup:
-	mkdir -p $(VOLUMES)
+DCOMPOSE = docker compose -f srcs/docker-compose.yml
+VOLUMES = /home/arosas-j/data/wordpress /home/arosas-j/data/mysql
 
 # Build and start the containers
 all: setup
 	$(DCOMPOSE) up --build -d
+
+# Setup: Create necessary directories
+setup:
+	mkdir -p $(VOLUMES)
 
 # Stop containers without removing volumes or images
 stop:
