@@ -1,4 +1,3 @@
-# Define paths
 DCOMPOSE = docker compose -f srcs/docker-compose.yml
 VOLUMES = /home/arosas-j/data/wordpress /home/arosas-j/data/mysql
 
@@ -8,15 +7,15 @@ VOLUMES = /home/arosas-j/data/wordpress /home/arosas-j/data/mysql
 all: setup
 	$(DCOMPOSE) up --build -d
 
-# Setup: Create necessary directories
+# Create necessary directories
 setup:
 	mkdir -p $(VOLUMES)
 
-# Stop containers without removing volumes or images
+# Stop containers
 stop:
 	$(DCOMPOSE) stop
 
-# Remove containers, keeping images and volumes
+# Remove containers
 down:
 	$(DCOMPOSE) down
 
@@ -25,15 +24,15 @@ force-rebuild: setup
 	$(DCOMPOSE) build --no-cache
 	$(DCOMPOSE) up -d
 
-# Remove containers and volumes (but keep images)
+# Remove containers and volumes
 clean:
 	$(DCOMPOSE) down --volumes
 
-# Remove everything (containers, volumes, images)
+# Remove everything
 fclean:
 	$(DCOMPOSE) down --rmi all --volumes
 
-# Remove the containers and restart them again
+# Remove the containers and restart
 restart: down all
 
 # Rebuild the project
