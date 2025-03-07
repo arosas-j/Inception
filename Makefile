@@ -2,6 +2,8 @@
 DCOMPOSE = docker compose -f srcs/docker-compose.yml
 VOLUMES = /home/arosas-j/data/wordpress /home/arosas-j/data/mysql
 
+.PHONY: all setup stop down force-rebuild clean fclean restart re
+
 # Build and start the containers
 all: setup
 	$(DCOMPOSE) up --build -d
@@ -18,6 +20,11 @@ stop:
 down:
 	$(DCOMPOSE) down
 
+# Force rebuild with --no-cache
+force-rebuild: setup
+	$(DCOMPOSE) build --no-cache
+	$(DCOMPOSE) up -d
+
 # Remove containers and volumes (but keep images)
 clean:
 	$(DCOMPOSE) down --volumes
@@ -26,5 +33,8 @@ clean:
 fclean:
 	$(DCOMPOSE) down --rmi all --volumes
 
-# Restart the project
-re: fclean all
+# Remove the containers and restart them again
+restart: down all
+
+# Rebuild the project
+re: fclean force-rebuild
